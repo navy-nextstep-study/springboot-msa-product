@@ -26,6 +26,9 @@ class ProductControllerTest {
 	@Autowired
 	ObjectMapper objectMapper;
 
+	@Autowired
+	ProductRepository productRepository;
+
 	@Test
 	void 상품_등록() throws Exception {
 		// given
@@ -39,5 +42,22 @@ class ProductControllerTest {
 		// then
 		resultActions.andExpect(status().isOk())
 			.andExpect(jsonPath("$.id").isNumber());
+	}
+
+	@Test
+	void 상품_조회() throws Exception {
+		// given
+		Product product = new Product("농구공", 10000, 100);
+		Product savedProduct = productRepository.save(product);
+
+		// when
+		ResultActions resultActions = mockMvc.perform(get("/api/products/{id}", savedProduct.getId()));
+
+		// then
+		resultActions.andExpect(status().isOk())
+			.andExpect(jsonPath("$.id").value(savedProduct.getId()))
+			.andExpect(jsonPath("$.name").value(savedProduct.getName()))
+			.andExpect(jsonPath("$.price").value(savedProduct.getPrice()))
+			.andExpect(jsonPath("$.stock").value(savedProduct.getStock()));
 	}
 }

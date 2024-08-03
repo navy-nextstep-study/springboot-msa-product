@@ -16,4 +16,9 @@ public class ProductService {
 		Product product = request.toProduct();
 		return productRepository.save(product).getId();
 	}
+
+	public Product getProduct(final Long productId) {
+		return productRepository.findById(productId)
+			.orElseThrow(() -> new IllegalArgumentException("Product not found. productId: " + productId));
+	}
 }
