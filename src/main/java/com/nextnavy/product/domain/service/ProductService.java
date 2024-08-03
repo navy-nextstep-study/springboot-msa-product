@@ -43,9 +43,14 @@ public class ProductService {
 		 TODO: 결제 취소 이벤트 발생 시 재고 복원 로직 추가
 		 TODO: 취소 이벤트에 대한 중복 처리 방지 로직 추가
 		*/
-		// TODO: 타사 제품 재고 갱신 로직 추가
 		Product product = productRepository.findById(productId)
 			.orElseThrow(() -> new IllegalArgumentException("Product not found. productId: " + productId));
-		product.updateStock(quantity);
+
+		if (product.isInternal()) {
+			product.updateStock(quantity);
+			return;
+		}
+
+		mockClient.updateStock(product.getSourceId(), quantity);
 	}
 }

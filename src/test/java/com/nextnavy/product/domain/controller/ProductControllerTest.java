@@ -93,7 +93,7 @@ class ProductControllerTest {
 	}
 
 	@Test
-	void 상품_재고_업데이트() throws Exception {
+	void 자사_상품_재고_업데이트() throws Exception {
 		// given
 		Product product = new Product("농구공", 10000, 100);
 		Product savedProduct = productRepository.save(product);
@@ -110,5 +110,26 @@ class ProductControllerTest {
 
 		Product updatedProduct = productRepository.findById(savedProduct.getId()).get();
 		assertThat(updatedProduct.getStock()).isEqualTo(99);
+	}
+
+	@Test
+	void 타사_상품_재고_업데이트() throws Exception {
+		// given
+		Product product = new Product(1L);
+		Product savedProduct = productRepository.save(product);
+
+		ProductStockRequest request = new ProductStockRequest(-1);
+
+		willDoNothing().given(mockClient).updateStock(anyLong(), anyInt());
+
+		// when
+		ResultActions resultActions = mockMvc.perform(patch("/api/products/{id}/stock", savedProduct.getId())
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(objectMapper.writeValueAsString(request)));
+
+		// then
+		resultActions.andExpect(status().isOk());
+
+		verify(mockClient).updateStock(anyLong(), anyInt());
 	}
 }
