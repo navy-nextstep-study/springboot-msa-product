@@ -1,4 +1,4 @@
-package com.nextnavy.product.domain;
+package com.nextnavy.product.domain.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

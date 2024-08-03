@@ -1,6 +1,6 @@
 package com.nextnavy.product.domain.dto;
 
-import com.nextnavy.product.domain.Product;
+import com.nextnavy.product.domain.domain.Product;
 
 public record ProductGetResponse(
 	Long id,

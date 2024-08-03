@@ -1,8 +1,10 @@
-package com.nextnavy.product.domain;
+package com.nextnavy.product.domain.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nextnavy.product.domain.domain.Product;
+import com.nextnavy.product.domain.domain.ProductRepository;
 import com.nextnavy.product.domain.dto.ProductResisterRequest;
 
 import lombok.RequiredArgsConstructor;

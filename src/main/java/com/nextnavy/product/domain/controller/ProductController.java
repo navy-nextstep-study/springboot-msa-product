@@ -1,4 +1,4 @@
-package com.nextnavy.product.domain;
+package com.nextnavy.product.domain.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nextnavy.product.domain.service.ProductService;
 import com.nextnavy.product.domain.dto.ProductGetResponse;
 import com.nextnavy.product.domain.dto.ProductResisterRequest;
 import com.nextnavy.product.domain.dto.ProductResisterResponse;
+import com.nextnavy.product.domain.dto.ProductStockRequest;
 
 import lombok.RequiredArgsConstructor;
 

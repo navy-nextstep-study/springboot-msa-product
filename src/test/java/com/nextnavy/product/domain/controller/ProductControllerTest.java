@@ -1,4 +1,4 @@
-package com.nextnavy.product.domain;
+package com.nextnavy.product.domain.controller;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -14,7 +14,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nextnavy.product.domain.domain.Product;
+import com.nextnavy.product.domain.domain.ProductRepository;
 import com.nextnavy.product.domain.dto.ProductResisterRequest;
+import com.nextnavy.product.domain.dto.ProductStockRequest;
 
 @SpringBootTest
 @AutoConfigureMockMvc
