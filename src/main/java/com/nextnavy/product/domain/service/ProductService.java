@@ -2,9 +2,9 @@ package com.nextnavy.product.domain.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.nextnavy.product.domain.domain.Product;
 import com.nextnavy.product.domain.domain.ProductRepository;
+import com.nextnavy.product.domain.dto.ProductInfo;
 import com.nextnavy.product.domain.dto.ProductResisterRequest;
 
 import lombok.RequiredArgsConstructor;
@@ -14,20 +14,26 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
 
 	private final ProductRepository productRepository;
+	private final MockClient mockClient;
 
 	public Long resisterProduct(final ProductResisterRequest request) {
 		Product product = request.toProduct();
 		return productRepository.save(product).getId();
 	}
 
-	public Product getProduct(final Long productId) {
+	public ProductInfo getProduct(final Long productId) {
 		/*
-		 TODO: 타사 제품 조회 로직 추가
 		 TODO: 서킷 브레이커 추가
 		 TODO: 유량 제어 추가
 		*/
-		return productRepository.findById(productId)
+		Product product = productRepository.findById(productId)
 			.orElseThrow(() -> new IllegalArgumentException("Product not found. productId: " + productId));
+
+		if (product.isInternal()) {
+			return ProductInfo.from(product);
+		}
+
+		return ProductInfo.of(productId, mockClient.getExternalProduct(product.getSourceId()));
 	}
 
 	@Transactional
