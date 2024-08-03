@@ -1,5 +1,6 @@
 package com.nextnavy.product.domain;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -59,5 +60,25 @@ class ProductControllerTest {
 			.andExpect(jsonPath("$.name").value(savedProduct.getName()))
 			.andExpect(jsonPath("$.price").value(savedProduct.getPrice()))
 			.andExpect(jsonPath("$.stock").value(savedProduct.getStock()));
+	}
+
+	@Test
+	void 상품_재고_업데이트() throws Exception {
+		// given
+		Product product = new Product("농구공", 10000, 100);
+		Product savedProduct = productRepository.save(product);
+
+		ProductStockRequest request = new ProductStockRequest(-1);
+
+		// when
+		ResultActions resultActions = mockMvc.perform(patch("/api/products/{id}/stock", savedProduct.getId())
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(objectMapper.writeValueAsString(request)));
+
+		// then
+		resultActions.andExpect(status().isOk());
+
+		Product updatedProduct = productRepository.findById(savedProduct.getId()).get();
+		assertThat(updatedProduct.getStock()).isEqualTo(99);
 	}
 }

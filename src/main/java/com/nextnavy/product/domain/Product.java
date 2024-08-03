@@ -34,4 +34,8 @@ public class Product {
 		this.price = price;
 		this.stock = stock;
 	}
+
+	public void updateStock(final int quantity) {
+		this.stock += quantity;
+	}
 }

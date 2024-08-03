@@ -1,6 +1,7 @@
 package com.nextnavy.product.domain;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nextnavy.product.domain.dto.ProductResisterRequest;
 
@@ -20,5 +21,12 @@ public class ProductService {
 	public Product getProduct(final Long productId) {
 		return productRepository.findById(productId)
 			.orElseThrow(() -> new IllegalArgumentException("Product not found. productId: " + productId));
+	}
+
+	@Transactional
+	public void updateStock(final Long productId, final int quantity) {
+		Product product = productRepository.findById(productId)
+			.orElseThrow(() -> new IllegalArgumentException("Product not found. productId: " + productId));
+		product.updateStock(quantity);
 	}
 }
