@@ -5,6 +5,8 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -98,10 +100,11 @@ class ProductControllerTest {
 		Product product = new Product("농구공", 10000, 100);
 		Product savedProduct = productRepository.save(product);
 
-		ProductStockRequest request = new ProductStockRequest(-1);
+		ProductStockRequest request = new ProductStockRequest(
+			List.of(new ProductStockRequest.ProductStock(savedProduct.getId(), -1)));
 
 		// when
-		ResultActions resultActions = mockMvc.perform(patch("/api/products/{id}/stock", savedProduct.getId())
+		ResultActions resultActions = mockMvc.perform(patch("/api/products/stock", savedProduct.getId())
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(objectMapper.writeValueAsString(request)));
 
@@ -118,12 +121,13 @@ class ProductControllerTest {
 		Product product = new Product(1L);
 		Product savedProduct = productRepository.save(product);
 
-		ProductStockRequest request = new ProductStockRequest(-1);
+		ProductStockRequest request = new ProductStockRequest(
+			List.of(new ProductStockRequest.ProductStock(savedProduct.getId(), -1)));
 
 		willDoNothing().given(mockClient).updateStock(anyLong(), anyInt());
 
 		// when
-		ResultActions resultActions = mockMvc.perform(patch("/api/products/{id}/stock", savedProduct.getId())
+		ResultActions resultActions = mockMvc.perform(patch("/api/products/stock", savedProduct.getId())
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(objectMapper.writeValueAsString(request)));
 
