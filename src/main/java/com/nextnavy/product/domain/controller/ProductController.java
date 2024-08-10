@@ -34,9 +34,9 @@ public class ProductController {
 		return ResponseEntity.ok(ProductGetResponse.from(productService.getProduct(id)));
 	}
 
-	@PatchMapping("/{id}/stock")
-	public ResponseEntity<Void> updateStock(@PathVariable Long id, @RequestBody ProductStockRequest request) {
-		productService.updateStock(id, request.quantity());
+	@PatchMapping("/stock")
+	public ResponseEntity<Void> updateStock(@RequestBody ProductStockRequest request) {
+		productService.updateStock(request.productStocks());
 		return ResponseEntity.ok().build();
 	}
 }

@@ -1,4 +1,12 @@
 package com.nextnavy.product.domain.dto;
 
-public record ProductStockRequest(int quantity) {
+import java.util.List;
+
+public record ProductStockRequest(
+	List<ProductStock> productStocks
+) {
+	public record ProductStock(
+		Long productId,
+		int quantity
+	) {}
 }
